@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>4709-002 Operator ID 校验 / 生成工具</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Luhn Mod-36 工具</h1>
+    <p>ID 格式: <code>AAABBBBBBBBBBBBC-DDD</code></p>
+    <p>
+      最终格式：<strong>AAA</strong> 为 3 位大写国家代码；后续 <strong>12</strong> 位 <code>小写字母或数字</code> 参与校验；<strong>c</strong> 为校验位 (Luhn Mod-36)；<strong>DDD</strong> 为随机 3 位小写字母或数字（参与校验）。<br />
+      校验位计算序列 = 12 位主体 + 3 位尾段，共 15 位。
+    </p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>校验现有 ID</h2>
+      <div class="mono">例如: ETSwo0seesghtjmc-xyz</div></br>
+      <label for="inputId" class="label">输入 ID:</label>
+      <input id="inputId" class="mono" placeholder="例: ETSwo0seesghtjmc-xyz" autocomplete="off" />
+      <button id="btnValidate">校验</button>
+      <div id="validateResult" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <h2>生成新的 ID</h2>
+      <div class="grid">
+  <label>国家代码(3 大写字母)</label>
+        <input id="genA" maxlength="3" placeholder="可填或留空" class="mono" value="CHN" />
+  <label>主体 (12 位, 可选, 小写/数字)</label>
+  <input id="genB" maxlength="12" placeholder="可填或留空" class="mono" />
+      </div>
+      <button id="btnGenerate">生成</button>
+      <div id="generateResult" class="result" aria-live="polite"></div>
+    </section>
+
+    <section class="panel about">
+      <h2>算法说明</h2>
+      <p>Luhn Mod-36 类似普通 Luhn (Mod-10)，但使用 0-9a-z 共 36 个字符，并以 36 做模。</p>
+      <ol>
+        <li>字符到数值映射: 0-9 -> 0-9, a-z -> 10-35。</li>
+        <li>从左到右遍历 (不含校验位)：奇数位置 *2，如果结果 >=36 则减 35 (等价于 sumDigits36)。</li>
+        <li>求所有加总 S，校验位值 = (36 - (S mod 36)) mod 36。</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <small>&copy; 2025 ETS Fly Team. Mod-36 Demo</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
